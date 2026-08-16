@@ -40,11 +40,13 @@ from ultralytics import YOLO
 PERSON_CLASS_ID = 0
 
 
-def run_stage2(video_path: str, model_path: str, conf_thresh: float, imgsz: int, out_dir: str):
+def run_stage2(video_path: str, model_path: str, conf_thresh: float, imgsz: int, out_dir: str,
+               tracker: str = "botsort.yaml"):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"[Stage2] Loading model: {model_path}")
+    print(f"[Stage2] Tracker config: {tracker}  |  conf floor: {conf_thresh}")
     model = YOLO(model_path)
 
     cap = cv2.VideoCapture(video_path)
@@ -77,7 +79,7 @@ def run_stage2(video_path: str, model_path: str, conf_thresh: float, imgsz: int,
             classes=[PERSON_CLASS_ID],
             conf=conf_thresh,
             imgsz=imgsz,
-            tracker="botsort.yaml",
+            tracker=tracker,
             persist=True,
             verbose=False,
         )[0]
@@ -143,9 +145,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--video", default="../data/cctv_clip.avi")
     parser.add_argument("--model", default="../models/yolo11m.pt")
-    parser.add_argument("--conf", type=float, default=0.15)
+    parser.add_argument("--conf", type=float, default=0.30,
+                        help="detector confidence floor. 0.15 caused heavy ID churn; 0.30 is stabler")
     parser.add_argument("--imgsz", type=int, default=1536)
+    parser.add_argument("--tracker", default="config/botsort_tuned.yaml",
+                        help="tracker config; use 'botsort.yaml' for ultralytics defaults")
     parser.add_argument("--out", default="../outputs")
     args = parser.parse_args()
 
-    run_stage2(args.video, args.model, args.conf, args.imgsz, args.out)
+    run_stage2(args.video, args.model, args.conf, args.imgsz, args.out, args.tracker)

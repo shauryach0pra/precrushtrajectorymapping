@@ -43,6 +43,9 @@ outputs/*.mp4
 outputs/*.avi
 # Keep JSON files as they are smaller and useful
 
+# Optional: Keep specific model if trained locally
+# !models/pretrained_traj_lstm.pt
+
 # OS
 .DS_Store
 Thumbs.db

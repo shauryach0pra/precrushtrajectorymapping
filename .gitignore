@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Large files
+models/*.pt
+data/*.avi
+data/*.mp4
+data/*.mov
+
+# Output files (keep structure but not large outputs)
+outputs/*.mp4
+outputs/*.avi
+# Keep JSON files as they are smaller and useful
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Devin
+.devin/

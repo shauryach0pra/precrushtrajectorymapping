@@ -1,5 +1,6 @@
 # Pre-Crush Trajectory Mapping
 Demo Video : https://www.youtube.com/watch?v=k9_PfLIWqPE
+
 Demo Dashboard : https://shauryachopra.dev/sentinelgrid
 
 A multi-stage pipeline for crowd detection, tracking, trajectory analysis, and density estimation using computer vision and deep learning. Designed for early detection of crowd crush risks through predictive density analysis.

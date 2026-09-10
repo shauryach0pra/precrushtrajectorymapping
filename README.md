@@ -1,8 +1,6 @@
 <div align="center">
 
-# Pre-Crush Trajectory Mapping
-
-*A multi-stage pipeline for crowd detection, tracking, and predictive density analysis using computer vision and deep learning*
+### Pre-Crush Trajectory Mapping
 
 </div>
 
@@ -11,24 +9,26 @@
 [![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?logo=opencv&logoColor=fff)](https://opencv.org/)
-[![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?logo=YouTube&logoColor=white)](https://www.youtube.com/watch?v=k9_PfLIWqPE)
-[![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white)](https://shauryachopra.dev/sentinelgrid)
 
 </div>
 
 ---
 
-## Overview
+### Overview
 
 This project implements a computer vision pipeline for early detection of crowd crush risks through predictive density analysis. It combines YOLOv11 person detection, BoT-SORT multi-object tracking, social force modeling, and LSTM trajectory forecasting to analyze crowd dynamics in real-time CCTV footage. The system transforms camera coordinates to world coordinates, predicts future crowd movements, and generates density heatmaps with convergence detection for safety monitoring.
 
-## Demo
+---
 
-**Demo Video:** https://www.youtube.com/watch?v=k9_PfLIWqPE
+### Demo
 
-**Live Dashboard:** https://shauryachopra.dev/sentinelgrid
+Demo Video: https://www.youtube.com/watch?v=k9_PfLIWqPE
 
-## Project Structure
+Live Dashboard: https://shauryachopra.dev/sentinelgrid
+
+---
+
+### Project Structure
 
 ```
 precrushtrajectorymapping/
@@ -74,24 +74,25 @@ precrushtrajectorymapping/
     └── index.html                    # Operations console interface
 ```
 
-## Tech Stack
+---
 
-**Core Technologies:**
+### Tech Stack
+
+Core Technologies:
 - Python 3.8+ - Primary programming language
 - PyTorch - Deep learning framework for LSTM trajectory forecasting
 - OpenCV - Computer vision library for video processing and transformations
 - NumPy - Numerical computing and array operations
 - SciPy - Scientific computing for social force calculations
 
-**Key Models:**
+Key Models:
 - YOLOv11 - Person detection (Ultralytics)
 - Custom LSTM - Trajectory prediction and forecasting
 - BoT-SORT - Multi-object tracking with ID stability
 
-**Deployment:**
-- Cloudflare Pages - Dashboard hosting
+---
 
-## Installation
+### Installation
 
 Install the required dependencies:
 
@@ -106,24 +107,28 @@ Required packages:
 - ultralytics
 - scipy
 
-## Configuration
+---
+
+### Configuration
 
 Before running the pipeline, you need to configure:
 
-1. **Camera Calibration** - Run homography calibration once per camera setup:
+Camera Calibration - Run homography calibration once per camera setup:
 ```bash
 python src/calibrate_homography.py --video data/cctv_clip.avi --frame 100
 ```
 
-2. **Tracker Configuration** - The project includes a tuned BoT-SORT configuration in `config/botsort_tuned.yaml` that reduces ID churn compared to default settings.
+Tracker Configuration - The project includes a tuned BoT-SORT configuration in `config/botsort_tuned.yaml` that reduces ID churn compared to default settings.
 
-3. **Model Files** - Download or train the required models:
+Model Files - Download or train the required models:
 - `models/yolo11m.pt` - YOLOv11 medium model
 - `models/pretrained_traj_lstm.pt` - Pre-trained LSTM model (or train your own)
 
-## Usage
+---
 
-### Complete Pipeline
+### Usage
+
+Complete Pipeline
 
 Run the full pipeline from detection to density analysis:
 
@@ -144,14 +149,14 @@ python src/stage6_forecast.py --stage4 outputs/stage4_forces.json --checkpoint m
 python src/stage7_density.py --trajectories outputs/world_trajectories.json --forecasts outputs/stage6_forecasts.json --homography config/homography.json --video data/cctv_clip.avi
 ```
 
-### Individual Stage Examples
+Individual Stage Examples
 
-**Stage 2: BoT-SORT Trajectory Tracking**
+Stage 2: BoT-SORT Trajectory Tracking
 ```bash
 python src/stage2_bytetrack.py --video data/cctv_clip.avi --model models/yolo11m.pt --tracker config/botsort_tuned.yaml
 ```
 
-**Stage 6b: Rolling Per-Frame Forecasts**
+Stage 6b: Rolling Per-Frame Forecasts
 ```bash
 # Kinematic baseline (no training required)
 python src/stage6_rolling_forecast.py --method cv
@@ -160,12 +165,12 @@ python src/stage6_rolling_forecast.py --method cv
 python src/stage6_rolling_forecast.py --method lstm --checkpoint models/pretrained_traj_lstm.pt
 ```
 
-**Stage 7b: Density Convergence Engine**
+Stage 7b: Density Convergence Engine
 ```bash
 python src/stage7_convergence_video.py --trajectories outputs/world_trajectories.json --forecasts outputs/stage6_rolling.json --homography config/homography.json --video data/cctv_clip.avi
 ```
 
-### Model Training
+Model Training
 
 Train the LSTM trajectory forecasting model on your own data:
 
@@ -173,24 +178,24 @@ Train the LSTM trajectory forecasting model on your own data:
 python src/train_traj_lstm.py --data outputs/world_trajectories.json --out models/pretrained_traj_lstm.pt --epochs 400 --hidden 128 --obs-len 5 --pred-len 5
 ```
 
-### Visualization Scripts
+Visualization Scripts
 
-**Detection vs Tracking Demo**
+Detection vs Tracking Demo
 ```bash
 python src/stage12_detect_track_video.py --mode both
 ```
 
-**Bird's-Eye View Homography Demo**
+Bird's-Eye View Homography Demo
 ```bash
 python src/stage3_bev_video.py --video data/cctv_clip.avi --homography config/homography.json --tracks outputs/stage2_tracks.json
 ```
 
-**Social Force Visualization**
+Social Force Visualization
 ```bash
 python src/stage45_force_video.py
 ```
 
-**Trajectory Forecasting Demo**
+Trajectory Forecasting Demo
 ```bash
 python src/stage6_forecast_video.py --video data/cctv_clip.avi --forecasts outputs/stage6_rolling.json --homography config/homography.json --verify
 ```
